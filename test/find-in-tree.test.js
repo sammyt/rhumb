@@ -14,13 +14,13 @@ describe("Tree Walker", function(){
         }
 
         it("should find /foo/bar", function(){
-            findIn(["foo", "bar"], tree).should.be.true
+            findIn(["foo", "bar"], tree).should.be.ok
         })
         it("should not find /foo as it is incomplete", function(){
-            findIn(["foo"], tree).should.be.false
+            findIn(["foo"], tree).should.not.be.ok
         })
         it("should not find /foo/bar/baz as it is too long", function(){
-            findIn(["foo", "bar", "baz"], tree).should.be.false
+            findIn(["foo", "bar", "baz"], tree).should.not.be.ok
         })
     })
     describe("finding paths containing variable parts", function(){
@@ -34,7 +34,7 @@ describe("Tree Walker", function(){
             }
         }
         it("should find /beans/sock where sock is a variable", function(){
-            findIn(["beans", "sock"], tree).should.be.true
+            findIn(["beans", "sock"], tree).should.be.ok
         })
     })
     describe("finding partial parts", function(){
@@ -49,7 +49,7 @@ describe("Tree Walker", function(){
             }
         }
         it("should find /articles/page-one", function(){
-            findIn(["articles", "page-one"], tree).should.be.true
+            findIn(["articles", "page-one"], tree).should.be.ok
         })
     })
 })
