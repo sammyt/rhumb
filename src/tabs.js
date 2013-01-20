@@ -1,13 +1,16 @@
 (function(){
 
 function findIn(parts, tree){
+  var params = {}
+
   var find = function(remaining, node){
+    
     var part = remaining.shift()
 
     if(!part) return node.leaf || false;
 
     if(node.fixed && part in node.fixed){
-        return find(remaining, node.fixed[part])
+      return find(remaining, node.fixed[part])
     }
 
     if(node.partial){
@@ -25,11 +28,21 @@ function findIn(parts, tree){
     }
 
     if(node.var){
+      params[node.var.name] = part
       return find(remaining, node.var)
     }
     return false
   }
-  return find(parts, tree) 
+
+  var found = find(parts, tree, params)
+  
+  if(found){
+    return {
+      fn : found
+    , params : params
+    }
+  }
+  return false
 }
 
 function create (){
@@ -47,42 +60,53 @@ function create (){
         }
       })
 
-      return parts
-    }
+    return parts
+  }
 
-    var updateTree = function(parts, node, fn){
-      var part = parts.shift()
-        , more = !!parts.length
+  var updateTree = function(parts, node, fn){
+    var part = parts.shift()
+      , more = !!parts.length
+      , peek
 
-      if(!part){ return }
+    if(!part){ return }
 
-      if(part.type == "fixed"){
-        node["fixed"] || (node["fixed"] = {});
-            
-        var peek = node.fixed[part.input] || {}
-        node.fixed[part.input] = peek
+    if(part.type == "fixed"){
+      node["fixed"] || (node["fixed"] = {});
+          
+      peek = node.fixed[part.input] || (node.fixed[part.input] = {})
 
-        if(!more){
-          peek.leaf = fn
-        } else {
-          updateTree(parts, peek, fn)    
-        }
+      if(!more){
+        peek.leaf = fn
+      } else {
+        updateTree(parts, peek, fn)
       }
-      else throw new Error("not yet!")
     }
+    else if(part.type == "var"){
+      peek = node.var || (node.var = {})
+      peek.name = part.input.substr(1)
 
-    router.add = function(ptn, callback){
-        updateTree(parse(ptn), tree, callback)
+      if(!more){
+        peek.leaf = fn
+      } else {
+        updateTree(parts, peek, fn)
+      }
     }
+    else throw new Error("not yet!")
+  }
 
-    router.match = function(path){
-        var parts = path.split("/").filter(function(d){ return !!d })
-        var fn  = findIn(parts, tree)
+  router.add = function(ptn, callback){
+      updateTree(parse(ptn), tree, callback)
+  }
 
+  router.match = function(path){
+      var parts = path.split("/").filter(function(d){ return !!d })
+        , match  = findIn(parts, tree)
 
-        if(fn) return fn()
-    }    
-    return router
+      if(match){
+        return match.fn.apply(match.fn, [match.params])
+      }
+  }    
+  return router
 }
 
 tabs = create()
