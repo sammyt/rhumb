@@ -19,3 +19,6 @@ describe("router", function(){
         expect(router.match("/bar/foo/farr")).to.equal("bar/foo/farr triggered")
     })
 })
+
+
+

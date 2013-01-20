@@ -1,0 +1,17 @@
+NODE_PATH ?= ./node_modules
+
+all: \
+	tab.js 
+
+# Modify this rule to build your own custom release.
+
+.INTERMEDIATE tab.js: \
+	src/start.js \
+	tab.js \
+	src/end.js
+
+tab%js: Makefile
+	@rm -f $@
+	@cat $(filter %.js,$^) > $@.tmp
+	@rm $@.tmp
+	@chmod a-w $@
