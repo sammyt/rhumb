@@ -1,5 +1,5 @@
 
-var findIn = require("../lib/find-in-tree")
+var findIn = tabs._findInTree
 
 describe("Tree Walker", function(){
     describe("finding fixed paths", function(){
