@@ -1,4 +1,4 @@
 
 all:
-	uglifyjs ./src/rhumb.js -o out/rhumb.js -c -m
+	uglifyjs ./src/rhumb.js -o rhumb.js -c -m
 	# woop woop
