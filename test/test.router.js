@@ -1,6 +1,6 @@
 describe("router", function(){
     it("should trigger callback and get return value", function(){
-        var router = tabs.create()
+        var router = rhumb.create()
         
         router.add("/bar", function(){
             return "woo, bar triggered"
@@ -12,7 +12,7 @@ describe("router", function(){
         expect(router.match("/bar")).to.equal("woo, bar triggered")
     })
     it("should pass params obect to callback", function(){
-        var router = tabs.create()
+        var router = rhumb.create()
 
         router.add("/sing/:sound", function(params){
             return params
@@ -22,7 +22,7 @@ describe("router", function(){
         })
     })
     it("should find multiple params", function(){
-        var router = tabs.create()
+        var router = rhumb.create()
 
         router.add("/sing/:sound/:volume", function(params){
             return params

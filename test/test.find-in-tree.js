@@ -1,5 +1,5 @@
 
-var findIn = tabs._findInTree
+var findIn = rhumb._findInTree
 
 describe("Tree Walker", function(){
     describe("finding fixed paths", function(){

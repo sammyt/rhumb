@@ -22,9 +22,9 @@ function findIn(parts, tree){
             }
           })
           
-        if(found){
-          return find(remaining, node)
-        }
+      if(found){
+        return find(remaining, node)
+      }
     }
 
     if(node.var){
@@ -49,19 +49,7 @@ function create (){
   var router = {}
     , tree   = {}
 
-  function parse(ptn){
-    var parts = ptn.split("/")
-      .filter(function(d){ return !!d })
-      .map(function(d){
-        var type = (d[0] == ":")  ? "var" : "fixed";
-        return {
-          "type"  : type,
-          "input" : d
-        }
-      })
-
-    return parts
-  }
+  
 
   var updateTree = function(parts, node, fn){
     var part = parts.shift()
@@ -109,9 +97,24 @@ function create (){
   return router
 }
 
-tabs = create()
-tabs.create = create
-tabs._findInTree = findIn
+function parse(ptn){
+  var parts = ptn.split("/")
+    .filter(function(d){ return !!d })
+    .map(function(d){
+      var type = (d[0] == ":")  ? "var" : "fixed";
+      return {
+        "type"  : type,
+        "input" : d
+      }
+    })
+
+  return parts
+}
+
+rhumb = create()
+rhumb.create = create
+rhumb.parse = parse
+rhumb._findInTree = findIn
 
 })()
 
