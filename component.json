@@ -1,15 +1,5 @@
 {
-  "name": "rhumb",
-  "version": "0.0.0",
-  "main": "./out/rhumb.js",
-  "readme": "Rhumb\n=====\n\nrouting, this and that.\n\n\nLicense\n-------\n\nLicense: http://sammyt.mit-license.org\n",
-  "readmeFilename": "README.md",
-  "gitHead": "4117815eda880a27f0806312256c74d5b24e9adf",
-  "_id": "rhumb@0.0.0",
-  "description": "Rhumb =====",
-  "commit": "4117815eda880a27f0806312256c74d5b24e9adf",
-  "repository": {
-    "type": "local-repo",
-    "path": "/Users/sammy/Documents/projects/nap/components/rhumb"
-  }
+  "name": "rhumb"
+, "version": "0.0.1"
+, "main": "rhumb.js"
 }
