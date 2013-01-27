@@ -109,14 +109,46 @@ describe("routing", function(){
       router.match("/foo/bar")
       spy.should.have.been.calledTwice
     })
-    it("should match /foo(/bar(/bay)) with /foo, /foo/knew & /foo/knew/you")
-    it("should match /foo(/:bar) with /foo, /foo/knew & foo/farr")
+    it("should match /foo(/{bar}(/{bay})) with /foo, /foo/knew & /foo/knew/you", function(){
+      var router = rhumb.create()
+      var spy = sinon.spy()
+
+      router.add("/foo(/{bar}(/{bay}))", spy)
+      router.match("/foo")
+      spy.should.have.been.calledOnce
+      router.match("/foo/knew")
+      spy.should.have.been.calledTwice
+      router.match("/foo/knew/you")
+      spy.should.have.been.calledThrice
+    })
   })
   describe("ambiguity detection", function(){
-    it("should detect /foo/:bar and /foo(/:maybe) as ambiguous")
+    it("should detect /foo/{bar} and /foo(/{maybe}) as ambiguous", function(){
+      var router = rhumb.create()
+      var spy = sinon.spy()
+
+      router.add("/foo/{bar})", spy)
+      expect(
+        function(){
+          router.add("/foo/{maybe})", spy)  
+        }
+      ).to.throw(Error, /Ambiguity/)
+    })
   })
   describe("precedence", function(){
-    it("should match /woo/wee over /woo/:wee")
+    it("should match /woo/wee over /woo/{wee}", function(){
+      var router = rhumb.create()
+        , one = sinon.spy()
+        , two = sinon.spy()
+
+      router.add("/woo/{wee}", two)
+      router.add("/woo/wee", one)
+      
+      router.match("/woo/wee")
+
+      one.should.have.been.calledOnce
+      two.should.not.have.been.called
+    })
   })
 })
 describe("parsing", function(){

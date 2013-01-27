@@ -49,14 +49,25 @@ function findIn(parts, tree){
   return false
 }
 
+function isArr(inst){
+  return inst instanceof Array
+}
+
 function create (){
   var router = {}
     , tree   = {}  
 
-  var updateTree = function(parts, node, fn){
+  function updateTree(parts, node, fn){
     var part = parts.shift()
       , more = !!parts.length
       , peek
+
+    
+    if(isArr(part)){
+      node.leaf = fn
+      updateTree(part, node, fn)
+      return
+    }
 
     if(!part){ return }
 
