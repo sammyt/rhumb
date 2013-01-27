@@ -47,9 +47,7 @@ function findIn(parts, tree){
 
 function create (){
   var router = {}
-    , tree   = {}
-
-  
+    , tree   = {}  
 
   var updateTree = function(parts, node, fn){
     var part = parts.shift()
@@ -71,7 +69,7 @@ function create (){
     }
     else if(part.type == "var"){
       peek = node.var || (node.var = {})
-      peek.name = part.input.substr(1)
+      peek.name = part.input
 
       if(!more){
         peek.leaf = fn
@@ -87,7 +85,7 @@ function create (){
   }
 
   router.match = function(path){
-      var parts = path.split("/").filter(function(d){ return !!d })
+      var parts = path.split("/").filter(falsy)
         , match  = findIn(parts, tree)
 
       if(match){
@@ -97,18 +95,111 @@ function create (){
   return router
 }
 
-function parse(ptn){
-  var parts = ptn.split("/")
-    .filter(function(d){ return !!d })
-    .map(function(d){
-      var type = (d[0] == ":")  ? "var" : "fixed";
-      return {
-        "type"  : type,
-        "input" : d
-      }
-    })
+function falsy(d){
+  return !!d
+}
 
-  return parts
+
+function parse(ptn){
+  var variable = /^{(\w+)}$/
+    , partial  = /([\w'-]+)?{([\w-]+)}([\w'-]+)?/
+    , bracks   = /^[)]+/
+
+  if(ptn.trim() == "/"){
+    return [{type:"fixed", input: ""}]
+  }
+
+  function parseVar(part){
+    var match = part.match(variable)
+    return {
+      type: "var"
+    , input: match[1]
+    }
+  }
+
+  function parseFixed(part){
+    return {
+      type: "fixed"
+    , input: part
+    }
+  }
+
+  function parsePartial(part){
+    var match = part.match(partial)
+      , ptn = ""
+
+    if(match[1]){
+      ptn += match[1]
+    }
+
+    ptn += "([\w-]+)"
+
+    if(match[3]){
+      ptn += match[3]
+    }
+
+    return {
+      type: "partial"
+    , input: new RegExp(ptn)
+    }
+  }
+
+  function parsePtn(ptn){
+    return ptn.split("/")
+      .filter(falsy)
+      .map(function(d){
+        if(variable.test(d)){
+          return parseVar(d)
+        }
+        if(partial.test(d)){
+          return parsePartial(d)
+        }
+        return parseFixed(d)
+      })
+  }
+
+  function parseOptional(ptn){
+    
+    var out =  ""
+      , list = []
+
+    var i = 0
+      , len = ptn.length
+      , curr
+      , onePart = true
+
+    while(onePart && i < len){
+      curr = ptn[i]
+      switch(curr){
+        case ")":
+        case "(":
+          onePart = false
+          break;
+
+        default:
+          out += curr
+          break;
+      }
+      i++
+    }
+
+    if(!onePart){
+      var next = parseOptional(ptn.substr(i + 1))
+      if(next.length){
+        list.push(
+          next
+        )  
+      }
+    }
+
+    return parsePtn(out).concat(list)
+  }
+
+  if(ptn.indexOf("(") == -1){
+    return parsePtn(ptn)
+  }
+  
+  return parseOptional(ptn)
 }
 
 rhumb = create()

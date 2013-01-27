@@ -1,7 +1,7 @@
 
 var findIn = rhumb._findInTree
 
-describe("Tree Walker", function(){
+describe("find-in-tree", function(){
     describe("finding fixed paths", function(){
         var tree = {
             "fixed" : {
