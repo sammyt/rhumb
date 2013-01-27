@@ -75,12 +75,6 @@ function create (){
       node["fixed"] || (node["fixed"] = {});
           
       peek = node.fixed[part.input] || (node.fixed[part.input] = {})
-
-      if(!more){
-        peek.leaf = fn
-      } else {
-        updateTree(parts, peek, fn)
-      }
     }
     else if(part.type == "var"){
       if(node.var){
@@ -88,12 +82,6 @@ function create (){
       }
       peek = (node.var = {})
       peek.name = part.input
-
-      if(!more){
-        peek.leaf = fn
-      } else {
-        updateTree(parts, peek, fn)
-      }
     }
     else if(part.type = "partial"){
       if(node.partial){
@@ -101,21 +89,19 @@ function create (){
           throw new Error("Ambiguity")
         }
       }
-
       node.partial || (node.partial = { names : {}, tests : [] })
 
-      var peek = {}
+      peek = {}
       peek.ptn = part.input
       peek.vars = part.vars
 
       node.partial.names[part.name] = peek
-      node.partial.tests.push(peek)
-
-      if(!more){
-        peek.leaf = fn
-      } else {
-        updateTree(parts, peek, fn)
-      } 
+      node.partial.tests.push(peek)  
+    }
+    if(!more){
+      peek.leaf = fn
+    } else {
+      updateTree(parts, peek, fn)
     }
   }
 
