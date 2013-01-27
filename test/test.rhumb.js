@@ -100,7 +100,15 @@ describe("routing", function(){
     })
   })
   describe("matching with optional paths", function(){
-    it("should match /foo(/bar) with /foo and /foo/knew")
+    it("should match /foo(/bar) with /foo and /foo/bar", function(){
+      var router = rhumb.create()
+      var spy = sinon.spy()
+
+      router.add("/foo(/bar)", spy)
+      router.match("/foo")
+      router.match("/foo/bar")
+      spy.should.have.been.calledTwice
+    })
     it("should match /foo(/bar(/bay)) with /foo, /foo/knew & /foo/knew/you")
     it("should match /foo(/:bar) with /foo, /foo/knew & foo/farr")
   })
