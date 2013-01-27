@@ -14,10 +14,14 @@ function findIn(parts, tree){
     }
 
     if(node.partial){
-      var tests = node.partial
+      var tests = node.partial.tests
         , found = tests.some(function(partial){
             if(partial.ptn.test(part)){
-              node = partial.node
+              var match = part.match(partial.ptn)
+              partial.vars.forEach(function(d, i){
+                params[d] = match[i+1]
+              })
+              node = partial
               return true
             }
           })
@@ -68,7 +72,10 @@ function create (){
       }
     }
     else if(part.type == "var"){
-      peek = node.var || (node.var = {})
+      if(node.var){
+        throw new Error("Ambiguity")
+      }
+      peek = (node.var = {})
       peek.name = part.input
 
       if(!more){
@@ -77,7 +84,28 @@ function create (){
         updateTree(parts, peek, fn)
       }
     }
-    else throw new Error("not yet!")
+    else if(part.type = "partial"){
+      if(node.partial){
+        if(node.partial.names[part.name]) {
+          throw new Error("Ambiguity")
+        }
+      }
+
+      node.partial || (node.partial = { names : {}, tests : [] })
+
+      var peek = {}
+      peek.ptn = part.input
+      peek.vars = part.vars
+
+      node.partial.names[part.name] = peek
+      node.partial.tests.push(peek)
+
+      if(!more){
+        peek.leaf = fn
+      } else {
+        updateTree(parts, peek, fn)
+      } 
+    }
   }
 
   router.add = function(ptn, callback){
@@ -101,9 +129,9 @@ function falsy(d){
 
 
 function parse(ptn){
-  var variable = /^{(\w+)}$/
-    , partial  = /([\w'-]+)?{([\w-]+)}([\w'-]+)?/
-    , bracks   = /^[)]+/
+  var variable  = /^{(\w+)}$/
+    , partial   = /([\w'-]+)?{([\w-]+)}([\w'-]+)?/
+    , bracks    = /^[)]+/
 
   if(ptn.trim() == "/"){
     return [{type:"fixed", input: ""}]
@@ -127,20 +155,39 @@ function parse(ptn){
   function parsePartial(part){
     var match = part.match(partial)
       , ptn = ""
+      , len = part.length
+      , i = 0
 
-    if(match[1]){
-      ptn += match[1]
+    while(i < len && match){
+      i += match[0].length
+
+      if(match[1]){
+        ptn += match[1]
+      }
+
+      ptn += "([\\w-]+)"
+
+      if(match[3]){
+        ptn += match[3]
+      }
+
+      match = part.substr(i).match(partial)
     }
 
-    ptn += "([\w-]+)"
-
-    if(match[3]){
-      ptn += match[3]
-    }
-
+    var vars = []
+      , name = part.replace(
+      /{([\w-]+)}/g
+    , function(p, d){
+        vars.push(d)
+        return "{var}"
+      }
+    )
+    
     return {
       type: "partial"
     , input: new RegExp(ptn)
+    , name: name
+    , vars: vars
     }
   }
 
@@ -204,7 +251,7 @@ function parse(ptn){
 
 rhumb = create()
 rhumb.create = create
-rhumb.parse = parse
+rhumb._parse = parse
 rhumb._findInTree = findIn
 
 })()

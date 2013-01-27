@@ -37,19 +37,4 @@ describe("find-in-tree", function(){
             findIn(["beans", "sock"], tree).should.be.ok
         })
     })
-    describe("finding partial parts", function(){
-        var tree = {
-            "fixed" : {
-                "articles" : {
-                    "partial" : [ { "ptn"  : /^page-/
-                                  , "node" : { "leaf" : true }
-                                  }
-                                ]
-                }
-            }
-        }
-        it("should find /articles/page-one", function(){
-            findIn(["articles", "page-one"], tree).should.be.ok
-        })
-    })
 })
