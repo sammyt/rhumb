@@ -25,7 +25,7 @@ rhumb.add("/happy/shoes", function(){
 })
 ```
 
-If those paths contain vairable parts, rhumb will grab them for you
+If those paths contain variable parts, rhumb will grab them for you
 
 ```javascript
 rhumb.add("/happy/shoes/{color}", function(params){
@@ -68,7 +68,7 @@ This route will match when anything is provided as a _variety_ e.g.
 * /potatoes/321
 * /potatoes/chips
 
-A variety *must* be provided, so `/variety` alone will not match
+A variety *must* be provided, so `/potatoes` alone will not match
 
 Paths with variable parts generate a `params` object which is passed to the callback
 
@@ -80,7 +80,7 @@ rhumb.match("/potatoes/marabel")
 // > "marabel"
 ```
 
-#### partially varaibles parts
+#### partially variable parts
 
 Partially variable parts allow you to capture more than one variable from a single segment of a URL.
 
