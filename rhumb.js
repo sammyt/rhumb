@@ -1,1 +1,191 @@
-(function(){function t(t,r){var n={},a=function(t,r){var e=t.shift();if(!e)return r.leaf||!1;if(r.fixed&&e in r.fixed)return a(t,r.fixed[e]);if(r.partial){var i=r.partial.tests,f=i.some(function(t){if(t.ptn.test(e)){var a=e.match(t.ptn);return t.vars.forEach(function(t,r){n[t]=a[r+1]}),r=t,!0}});if(f)return a(t,r)}return r.var?(n[r.var.name]=e,a(t,r.var)):!1},e=a(t,r,n);return e?{fn:e,params:n}:!1}function r(){var r={},e={},i=function(t,r,n){var a,e=t.shift(),f=!!t.length;if(e)if("fixed"==e.type)r.fixed||(r.fixed={}),a=r.fixed[e.input]||(r.fixed[e.input]={}),f?i(t,a,n):a.leaf=n;else if("var"==e.type){if(r.var)throw Error("Ambiguity");a=r.var={},a.name=e.input,f?i(t,a,n):a.leaf=n}else if(e.type="partial"){if(r.partial&&r.partial.names[e.name])throw Error("Ambiguity");r.partial||(r.partial={names:{},tests:[]});var a={};a.ptn=e.input,a.vars=e.vars,r.partial.names[e.name]=a,r.partial.tests.push(a),f?i(t,a,n):a.leaf=n}};return r.add=function(t,r){i(a(t),e,r)},r.match=function(r){var a=r.split("/").filter(n),i=t(a,e);return i?i.fn.apply(i.fn,[i.params]):void 0},r}function n(t){return!!t}function a(t){function r(t){var r=t.match(u);return{type:"var",input:r[1]}}function a(t){return{type:"fixed",input:t}}function e(t){for(var r=t.match(p),n="",a=t.length,e=0;a>e&&r;)e+=r[0].length,r[1]&&(n+=r[1]),n+="([\\w-]+)",r[3]&&(n+=r[3]),r=t.substr(e).match(p);var i=[],f=t.replace(/{([\w-]+)}/g,function(t,r){return i.push(r),"{var}"});return{type:"partial",input:RegExp(n),name:f,vars:i}}function i(t){return t.split("/").filter(n).map(function(t){return u.test(t)?r(t):p.test(t)?e(t):a(t)})}function f(t){for(var r,n="",a=[],e=0,u=t.length,p=!0;p&&u>e;){switch(r=t[e]){case")":case"(":p=!1;break;default:n+=r}e++}if(!p){var s=f(t.substr(e+1));s.length&&a.push(s)}return i(n).concat(a)}var u=/^{(\w+)}$/,p=/([\w'-]+)?{([\w-]+)}([\w'-]+)?/;return"/"==t.trim()?[{type:"fixed",input:""}]:-1==t.indexOf("(")?i(t):f(t)}rhumb=r(),rhumb.create=r,rhumb._parse=a,rhumb._findInTree=t})();
+rhumb = function() {
+  function findIn(parts, tree) {
+    var params = {};
+    var find = function(remaining, node) {
+      var part = remaining.shift();
+      if (!part) return node.leaf || false;
+      if (node.fixed && part in node.fixed) {
+        return find(remaining, node.fixed[part]);
+      }
+      if (node.partial) {
+        var tests = node.partial.tests, found = tests.some(function(partial) {
+          if (partial.ptn.test(part)) {
+            var match = part.match(partial.ptn);
+            partial.vars.forEach(function(d, i) {
+              params[d] = match[i + 1];
+            });
+            node = partial;
+            return true;
+          }
+        });
+        if (found) {
+          return find(remaining, node);
+        }
+      }
+      if (node.var) {
+        params[node.var.name] = part;
+        return find(remaining, node.var);
+      }
+      return false;
+    };
+    var found = find(parts, tree, params);
+    if (found) {
+      return {
+        fn: found,
+        params: params
+      };
+    }
+    return false;
+  }
+  function isArr(inst) {
+    return inst instanceof Array;
+  }
+  function create() {
+    var router = {}, tree = {};
+    function updateTree(parts, node, fn) {
+      var part = parts.shift(), more = !!parts.length, peek;
+      if (isArr(part)) {
+        node.leaf = fn;
+        updateTree(part, node, fn);
+        return;
+      }
+      if (!part) {
+        return;
+      }
+      if (part.type == "fixed") {
+        node["fixed"] || (node["fixed"] = {});
+        peek = node.fixed[part.input] || (node.fixed[part.input] = {});
+      } else if (part.type == "var") {
+        if (node.var) {
+          throw new Error("Ambiguity");
+        }
+        peek = node.var = {};
+        peek.name = part.input;
+      } else if (part.type = "partial") {
+        if (node.partial) {
+          if (node.partial.names[part.name]) {
+            throw new Error("Ambiguity");
+          }
+        }
+        node.partial || (node.partial = {
+          names: {},
+          tests: []
+        });
+        peek = {};
+        peek.ptn = part.input;
+        peek.vars = part.vars;
+        node.partial.names[part.name] = peek;
+        node.partial.tests.push(peek);
+      }
+      if (!more) {
+        peek.leaf = fn;
+      } else {
+        updateTree(parts, peek, fn);
+      }
+    }
+    router.add = function(ptn, callback) {
+      updateTree(parse(ptn), tree, callback);
+    };
+    router.match = function(path) {
+      var parts = path.split("/").filter(falsy), match = findIn(parts, tree);
+      if (match) {
+        return match.fn.apply(match.fn, [ match.params ]);
+      }
+    };
+    return router;
+  }
+  function falsy(d) {
+    return !!d;
+  }
+  function parse(ptn) {
+    var variable = /^{(\w+)}$/, partial = /([\w'-]+)?{([\w-]+)}([\w'-]+)?/, bracks = /^[)]+/;
+    if (ptn.trim() == "/") {
+      return [ {
+        type: "fixed",
+        input: ""
+      } ];
+    }
+    function parseVar(part) {
+      var match = part.match(variable);
+      return {
+        type: "var",
+        input: match[1]
+      };
+    }
+    function parseFixed(part) {
+      return {
+        type: "fixed",
+        input: part
+      };
+    }
+    function parsePartial(part) {
+      var match = part.match(partial), ptn = "", len = part.length, i = 0;
+      while (i < len && match) {
+        i += match[0].length;
+        if (match[1]) {
+          ptn += match[1];
+        }
+        ptn += "([\\w-]+)";
+        if (match[3]) {
+          ptn += match[3];
+        }
+        match = part.substr(i).match(partial);
+      }
+      var vars = [], name = part.replace(/{([\w-]+)}/g, function(p, d) {
+        vars.push(d);
+        return "{var}";
+      });
+      return {
+        type: "partial",
+        input: new RegExp(ptn),
+        name: name,
+        vars: vars
+      };
+    }
+    function parsePtn(ptn) {
+      return ptn.split("/").filter(falsy).map(function(d) {
+        if (variable.test(d)) {
+          return parseVar(d);
+        }
+        if (partial.test(d)) {
+          return parsePartial(d);
+        }
+        return parseFixed(d);
+      });
+    }
+    function parseOptional(ptn) {
+      var out = "", list = [];
+      var i = 0, len = ptn.length, curr, onePart = true;
+      while (onePart && i < len) {
+        curr = ptn[i];
+        switch (curr) {
+         case ")":
+         case "(":
+          onePart = false;
+          break;
+
+         default:
+          out += curr;
+          break;
+        }
+        i++;
+      }
+      if (!onePart) {
+        var next = parseOptional(ptn.substr(i + 1));
+        if (next.length) {
+          list.push(next);
+        }
+      }
+      return parsePtn(out).concat(list);
+    }
+    if (ptn.indexOf("(") == -1) {
+      return parsePtn(ptn);
+    }
+    return parseOptional(ptn);
+  }
+  var rhumb = create();
+  rhumb.create = create;
+  rhumb._parse = parse;
+  rhumb._findInTree = findIn;
+  return rhumb;
+}();

@@ -1,4 +1,4 @@
-(function(){
+rhumb = (function(){
 
 function findIn(parts, tree){
   var params = {}
@@ -246,11 +246,12 @@ function parse(ptn){
   return parseOptional(ptn)
 }
 
-rhumb = create()
+var rhumb = create()
 rhumb.create = create
 rhumb._parse = parse
 rhumb._findInTree = findIn
 
+return rhumb
 })()
 
 
