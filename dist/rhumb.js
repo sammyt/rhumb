@@ -1,4 +1,5 @@
-define(function(){
+
+define('rhumb',[],function(){
 
 function findIn(parts, tree){
   var params = {}
@@ -252,4 +253,4 @@ rhumb._parse = parse
 rhumb._findInTree = findIn
 
 return rhumb
-})
+});

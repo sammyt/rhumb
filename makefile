@@ -1,4 +1,4 @@
 
 all:
-	uglifyjs ./src/rhumb.js -o rhumb.js -b indent-level=2 
+	r.js -o build.js 
 	# woop woop
