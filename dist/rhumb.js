@@ -1,5 +1,5 @@
 
-define('rhumb',[],function(){
+(function(root){
 
 function findIn(parts, tree){
   var params = {}
@@ -251,6 +251,13 @@ var rhumb = create()
 rhumb.create = create
 rhumb._parse = parse
 rhumb._findInTree = findIn
+root.rhumb = rhumb
+
+if ( typeof define === "function" && define.amd ) { 
+  define('rhumb',[], function() { return rhumb; }); 
+}
 
 return rhumb
-});
+
+})(window)
+;
