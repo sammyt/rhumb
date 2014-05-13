@@ -77,11 +77,15 @@ function create (){
       peek = node.fixed[part.input] || (node.fixed[part.input] = {})
     }
     else if(part.type == "var"){
-      if(node.var){
-        throw new Error("Ambiguity")
+      if(node.var) {
+        if(node.var.name == part.input) {
+          peek = node.var
+        } else {
+          throw new Error("Ambiguity")
+        }
+      } else {
+        peek = node.var = { name : part.input }
       }
-      peek = (node.var = {})
-      peek.name = part.input
     }
     else if(part.type = "partial"){
       if(node.partial){
