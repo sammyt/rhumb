@@ -48,6 +48,20 @@ describe("routing", function(){
       router.match("/wibble/humm/wobble")
       spy.should.have.been.calledOnce
     })
+    it("should match /foo/{bar} and /foo/{bar}/{baz} as different paths", function(){
+      var router = rhumb.create()
+        , one = sinon.spy()
+        , two = sinon.spy()
+
+      router.add("/foo/{bar}", one)
+      router.add("/foo/{bar}/{baz}", two)  
+
+      router.match("/foo/wee")
+      router.match("/foo/wee/waa")
+
+      one.should.have.been.calledOnce.calledWith({bar:"wee"})
+      two.should.have.been.calledOnce.calledWith({bar:"wee", baz:"waa"})
+    })
   })
   describe("matching with partially variable paths", function(){
     it("should match /page-{num} with path /page-four", function(){
