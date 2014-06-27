@@ -21,7 +21,53 @@ describe("routing", function(){
       expect(router.match("/sing/bird-song")).to.eql({
         sound : "bird-song"
       })
-    })  
+    })
+    it("should pass query string params to callback", function(){
+      var router = rhumb.create()
+
+      router.add("/sing", function(params){
+        return params
+      })
+      expect(router.match("/sing?foo=bar&baz=bam")).to.eql({
+        foo : "bar"
+      , baz : "bam"
+      })
+    }) 
+    it("should pass query string params and path params to callback", function(){
+      var router = rhumb.create()
+
+      router.add("/sing/{sound}", function(params){
+        return params
+      })
+      expect(router.match("/sing/bird-song?foo=bar&baz=bam")).to.eql({
+        sound : "bird-song"
+      , foo : "bar"
+      , baz : "bam"
+      })
+    })
+    it("should add query string params without values as undefined", function(){
+      var router = rhumb.create()
+
+      router.add("/sing/{sound}", function(params){
+        return params
+      })
+      expect(router.match("/sing/bird-song?foo=&bar&baz=bop")).to.eql({
+        sound : "bird-song"
+      , foo : undefined
+      , bar : undefined
+      , baz : "bop"
+      })
+    })
+    it("should handle incomplete query strings", function(){
+      var router = rhumb.create()
+
+      router.add("/sing", function(params){
+        return params
+      })
+      expect(router.match("/sing?foo=&")).to.eql({
+        foo : undefined
+      })
+    })
   })
   describe("matching with variable paths", function(){
     it("should match /{foo} with path /bar", function(){
