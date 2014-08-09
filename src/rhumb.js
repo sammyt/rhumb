@@ -1,5 +1,3 @@
-(function(root){
-
 function findIn(parts, tree){
   var params = {}
 
@@ -256,10 +254,4 @@ rhumb._parse = parse
 rhumb._findInTree = findIn
 root.rhumb = rhumb
 
-if ( typeof define === "function" && define.amd ) { 
-  define([], function() { return rhumb; }); 
-}
-
-return rhumb
-
-})(window)
+module.exports = rhumb

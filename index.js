@@ -1,3 +1,1 @@
-require('./rhumb')
-
-module.exports = rhumb;
+module.exports = require('./src/rhumb')

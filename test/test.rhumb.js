@@ -1,3 +1,10 @@
+var rhumb  = require('rhumb')
+  , sinon  = require('sinon')
+  , expect = require('chai').expect
+
+require('chai').should()
+require('chai').use(require('sinon-chai'))
+
 describe("routing", function(){
   describe("callback", function(){
     it("should trigger callback and get return value", function(){
