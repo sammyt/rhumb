@@ -252,6 +252,5 @@ var rhumb = create()
 rhumb.create = create
 rhumb._parse = parse
 rhumb._findInTree = findIn
-root.rhumb = rhumb
 
 module.exports = rhumb
