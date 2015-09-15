@@ -12,8 +12,10 @@
   },
   "scripts": {
     "test" : "mocha",
-    "compile": "browserify src/rhumb.js --standalone rhumb -o lib/rhumb.js",
+    "clean" : "rm -rf lib",
+    "compile": "mkdir -p lib && browserify src/rhumb.js --standalone rhumb -o lib/rhumb.js",
     "pretest": "npm run compile",
+    "prepublish": "npm run clean && npm run compile && npm test",
     "test-browser": "npm run pretest && browserify test/test.rhumb.js -o lib/test.rhumb.js && open test/index.html"
   },
   "repository": {
