@@ -4,13 +4,17 @@
   "description": "URL routing in js",
   "main": "src/rhumb.js",
   "devDependencies": {
+    "browserify": "^11.1.0",
     "chai": "^3.2.0",
     "mocha": "^2.3.2",
     "sinon": "^1.16.1",
     "sinon-chai": "^2.8.0"
   },
   "scripts": {
-    "test" : "mocha"
+    "test" : "mocha",
+    "compile": "browserify src/rhumb.js --standalone rhumb -o lib/rhumb.js",
+    "pretest": "npm run compile",
+    "test-browser": "npm run pretest && browserify test/test.rhumb.js -o lib/test.rhumb.js && open test/index.html"
   },
   "repository": {
     "type": "git",

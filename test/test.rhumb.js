@@ -1,4 +1,4 @@
-var rhumb  = require('../src/rhumb')
+var rhumb  = require('../lib/rhumb')
   , sinon  = require('sinon')
   , expect = require('chai').expect
 
