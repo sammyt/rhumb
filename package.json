@@ -1,6 +1,6 @@
 {
   "name": "rhumb",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "URL routing in js",
   "main": "lib/rhumb.js",
   "devDependencies": {
@@ -11,8 +11,8 @@
     "sinon-chai": "^2.8.0"
   },
   "scripts": {
-    "test" : "mocha",
-    "clean" : "rm -rf lib",
+    "test": "mocha",
+    "clean": "rm -rf lib",
     "compile": "mkdir -p lib && browserify src/rhumb.js --standalone rhumb -o lib/rhumb.js",
     "pretest": "npm run compile",
     "prepublish": "npm run clean && npm run compile && npm test",
