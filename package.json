@@ -1,7 +1,34 @@
 {
-  "name": "rhumb"
-, "version": "0.0.1"
-, "dependencies" : {
-    "requirejs" : "*"
-  }
+  "name": "rhumb",
+  "version": "0.2.0",
+  "description": "URL routing in js",
+  "main": "lib/rhumb.js",
+  "devDependencies": {
+    "browserify": "^11.1.0",
+    "chai": "^3.2.0",
+    "mocha": "^2.3.2",
+    "sinon": "^1.16.1",
+    "sinon-chai": "^2.8.0"
+  },
+  "scripts": {
+    "test": "mocha",
+    "clean": "rm -rf lib",
+    "compile": "mkdir -p lib && browserify src/rhumb.js --standalone rhumb -o lib/rhumb.js",
+    "pretest": "npm run compile",
+    "prepublish": "npm run clean && npm run compile && npm test",
+    "test-browser": "npm run pretest && browserify test/test.rhumb.js -o lib/test.rhumb.js && open test/index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sammyt/rhumb.git"
+  },
+  "author": "Samuel Williams <sam@ziazoo.co.uk> (http://www.ziazoo.co.uk)",
+  "contributors": [
+    "Marcus Stade <marcus@stade.se> (http://madebystade.se)"
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sammyt/rhumb/issues"
+  },
+  "homepage": "https://github.com/sammyt/rhumb#readme"
 }
