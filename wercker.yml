@@ -1,0 +1,20 @@
+box: nodesource/trusty
+
+dev:
+  steps:
+    - script:
+        code: export NODE_ENV=development
+    - internal/watch:
+        code: npm test
+        reload: true
+
+build:
+  steps:
+    - npm-install
+    - npm-test
+
+deploy:
+  steps:
+    - npm-install
+    - npm-test
+    - npm-publish

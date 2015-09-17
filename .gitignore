@@ -1,3 +1,5 @@
 node_modules
 npm-debug.log
 lib
+_builds
+_steps
