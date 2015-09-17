@@ -5,18 +5,12 @@
   "main": "lib/rhumb.js",
   "devDependencies": {
     "browserify": "^11.1.0",
-    "chai": "^3.2.0",
-    "mocha": "^2.3.2",
-    "sinon": "^1.16.1",
-    "sinon-chai": "^2.8.0"
+    "faucet": "0.0.1",
+    "tape": "^4.2.0"
   },
   "scripts": {
-    "test": "mocha",
-    "clean": "rm -rf lib",
-    "compile": "mkdir -p lib && browserify src/rhumb.js --standalone rhumb -o lib/rhumb.js",
-    "pretest": "npm run compile",
-    "prepublish": "npm run clean && npm run compile && npm test",
-    "test-browser": "npm run pretest && browserify test/test.rhumb.js -o lib/test.rhumb.js && open test/index.html"
+    "test": "make test",
+    "preversion": "make all"
   },
   "repository": {
     "type": "git",
