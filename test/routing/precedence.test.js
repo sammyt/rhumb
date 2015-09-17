@@ -7,11 +7,11 @@ test("should match /woo/wee over /woo/{wee}", function(t) {
   var router = rhumb.create()
 
   router.add("/woo/{wee}", function() {
-    t.notOk(true, "should not be called")
+    t.fail("should not be called")
   })
 
   router.add("/woo/wee", function() {
-    t.ok(true, "should be called")
+    t.pass("should be called")
   })
 
   router.match("/woo/wee")

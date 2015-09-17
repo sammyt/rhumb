@@ -10,6 +10,6 @@ test("should detect /foo/{bar} and /foo(/{maybe}) as ambiguous", function(t) {
   try {
     router.add("/foo/{maybe})", function() {})
   } catch(e) {
-    t.ok(e, "should detect ambiguity")
+    t.pass("should detect ambiguity")
   }
 })

@@ -6,7 +6,7 @@ test("should match /foo(/bar) with /foo and /foo/bar", function(t) {
   var router = rhumb.create()
 
   router.add("/foo(/bar)", function() {
-    t.ok(1, "should be called")
+    t.pass("should be called")
   })
 
   router.match("/foo")
@@ -18,7 +18,7 @@ test("should match /foo(/{bar}(/{bay})) with /foo, /foo/knew & /foo/knew/you", f
   var router = rhumb.create()
 
   router.add("/foo(/{bar}(/{bay}))", function(params) {
-    t.ok(1, "should be called")
+    t.pass("should be called")
 
     params.bar && t.equal(params.bar, "knew")
     params.bay && t.equal(params.bay, "you")
