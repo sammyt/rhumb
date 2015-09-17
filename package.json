@@ -7,16 +7,17 @@
     "browserify": "^11.1.0",
     "chai": "^3.2.0",
     "mocha": "^2.3.2",
+    "popper": "0.0.20",
     "sinon": "^1.16.1",
     "sinon-chai": "^2.8.0"
   },
   "scripts": {
-    "test": "mocha",
+    "test-node": "mocha",
     "clean": "rm -rf lib",
-    "compile": "mkdir -p lib && browserify src/rhumb.js --standalone rhumb -o lib/rhumb.js",
+    "compile": "npm run clean && mkdir lib && browserify src/rhumb.js --standalone rhumb -o lib/rhumb.js",
     "pretest": "npm run compile",
     "prepublish": "npm run clean && npm run compile && npm test",
-    "test-browser": "npm run pretest && browserify test/test.rhumb.js -o lib/test.rhumb.js && open test/index.html"
+    "test": "popper"
   },
   "repository": {
     "type": "git",

@@ -1,0 +1,10 @@
+tests: (npm run pretest > /dev/null) && browserify test/test.rhumb.js
+
+watch: 
+  - src
+  - test
+
+browsers:
+  - chrome
+  - firefox
+  - ie11
