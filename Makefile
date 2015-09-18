@@ -12,7 +12,7 @@ test: build
 
 node_modules: package.json
 	echo "--> Installing dependencies ..."
-	npm install
+	npm -q install
 
 clean:
 	rm -rf lib node_modules
