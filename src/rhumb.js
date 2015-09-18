@@ -112,18 +112,33 @@ function create (){
   }
 
   router.match = function(path){
-      var parts = path.split("/").filter(falsy)
-        , match  = findIn(parts, tree)
+    
+    var split = path.split("?").filter(falsy)
+      , parts = split[0].split("/").filter(falsy)
+      , params = parseQueryString(split[1])
+      , match = findIn(parts, tree)
 
-      if(match){
-        return match.fn.apply(match.fn, [match.params])
+    if(match){
+      for (var prop in match.params) {
+        params[prop] = match.params[prop]
       }
-  }    
+      return match.fn.apply(match.fn, [params])
+    }
+  }   
   return router
 }
 
 function falsy(d){
   return !!d
+}
+
+function parseQueryString(s) {
+  if(!s) return {}
+  return s.split("&").filter(falsy).reduce(function(qs, kv) {
+    var pair = kv.split('=').filter(falsy)
+    qs[pair[0]] = pair[1]
+    return qs
+  }, {})
 }
 
 
