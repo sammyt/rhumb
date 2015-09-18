@@ -1,7 +1,7 @@
 var test  = require('tape')
   , rhumb = require('../../lib/rhumb')
 
-test("should match /woo/wee over /woo/{wee}", function(t) {
+test("Routing should match /woo/wee over /woo/{wee}", function(t) {
   t.plan(1)
 
   var router = rhumb.create()

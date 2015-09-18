@@ -1,7 +1,7 @@
 var test  = require('tape')
   , rhumb = require('../../lib/rhumb')
 
-test("routing should trigger callback and get return value", function(t) {
+test("Routing should trigger callback and get return value", function(t) {
   t.plan(2)
 
   var router = rhumb.create()
@@ -18,7 +18,7 @@ test("routing should trigger callback and get return value", function(t) {
   t.equal(router.match("/bar"), "woo, bar triggered")
 })
 
-test("routing should pass params object to callback", function(t) {
+test("Routing should pass params object to callback", function(t) {
   t.plan(1)
   var router = rhumb.create()
 

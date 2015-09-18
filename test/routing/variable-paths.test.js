@@ -1,7 +1,7 @@
 var test  = require('tape')
   , rhumb = require('../../lib/rhumb')
 
-test("routing should match /{foo} with path /bar", function(t) {
+test("Routing should match /{foo} with path /bar", function(t) {
   t.plan(1)
 
   var router = rhumb.create()
@@ -13,7 +13,7 @@ test("routing should match /{foo} with path /bar", function(t) {
   router.match("/bar")
 })
 
-test("routing should match /wibble/{foo} with path /wibble/bean", function(t) {
+test("Routing should match /wibble/{foo} with path /wibble/bean", function(t) {
   t.plan(1)
 
   var router = rhumb.create()
@@ -25,7 +25,7 @@ test("routing should match /wibble/{foo} with path /wibble/bean", function(t) {
   router.match("/wibble/bean")
 })
 
-test("routing should match /wibble/{foo}/wobble with path /wibble/humm/wobble", function(t) {
+test("Routing should match /wibble/{foo}/wobble with path /wibble/humm/wobble", function(t) {
   t.plan(1)
 
   var router = rhumb.create()
@@ -37,7 +37,7 @@ test("routing should match /wibble/{foo}/wobble with path /wibble/humm/wobble", 
   router.match("/wibble/humm/wobble")
 })
 
-test("routing should match /foo/{bar} and /foo/{bar}/{baz} as different paths", function(t) {
+test("Routing should match /foo/{bar} and /foo/{bar}/{baz} as different paths", function(t) {
   t.plan(2)
 
   var router = rhumb.create()

@@ -1,7 +1,7 @@
 var test  = require('tape')
   , rhumb = require('../../lib/rhumb')
 
-test("routing should match /page-{num} with path /page-four", function(t) {
+test("Routing should match /page-{num} with path /page-four", function(t) {
   t.plan(1)
 
   var router = rhumb.create()
@@ -13,7 +13,7 @@ test("routing should match /page-{num} with path /page-four", function(t) {
   router.match("/page-four")
 })
 
-test("routing should match /page-{num} with path /page-4", function(t) {
+test("Routing should match /page-{num} with path /page-4", function(t) {
   t.plan(1)
 
   var router = rhumb.create()
@@ -25,7 +25,7 @@ test("routing should match /page-{num} with path /page-4", function(t) {
   router.match("/page-4")
 })
 
-test("routing should match /i-{action}-you with path /i-poke-you", function(t) {
+test("Routing should match /i-{action}-you with path /i-poke-you", function(t) {
   t.plan(1)
   var router = rhumb.create()
 
@@ -36,7 +36,7 @@ test("routing should match /i-{action}-you with path /i-poke-you", function(t) {
   router.match("/i-poke-you")
 })
 
-test("routing should match /fix/i-{action}-you/faff with path /fix/i-poke-you/faff", function(t) {
+test("Routing should match /fix/i-{action}-you/faff with path /fix/i-poke-you/faff", function(t) {
   t.plan(1)
   var router = rhumb.create()
 
@@ -47,7 +47,7 @@ test("routing should match /fix/i-{action}-you/faff with path /fix/i-poke-you/fa
   router.match("/fix/i-poke-you/faff")
 })
 
-test("routing should match /{day}-{month}-{year} with path /mon-01-2020", function(t) {
+test("Routing should match /{day}-{month}-{year} with path /mon-01-2020", function(t) {
   t.plan(1)
   var router = rhumb.create()
 

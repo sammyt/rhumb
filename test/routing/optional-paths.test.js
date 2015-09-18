@@ -1,7 +1,7 @@
 var test  = require('tape')
   , rhumb = require('../../lib/rhumb')
 
-test("should match /foo(/bar) with /foo and /foo/bar", function(t) {
+test("Routing should match /foo(/bar) with /foo and /foo/bar", function(t) {
   t.plan(2)
   var router = rhumb.create()
 
@@ -13,7 +13,7 @@ test("should match /foo(/bar) with /foo and /foo/bar", function(t) {
   router.match("/foo/bar")
 })
 
-test("should match /foo(/{bar}(/{bay})) with /foo, /foo/knew & /foo/knew/you", function(t) {
+test("Routing should match /foo(/{bar}(/{bay})) with /foo, /foo/knew & /foo/knew/you", function(t) {
   t.plan(6)
   var router = rhumb.create()
 

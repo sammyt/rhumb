@@ -1,7 +1,7 @@
 var test  = require('tape')
   , rhumb = require('../../lib/rhumb')
 
-test("should find optional part at end of path", function(t){
+test("Parsing should find optional part at end of path", function(t){
   var out = rhumb._parse("/one/two(/three)")
 
   t.plan(2)
@@ -14,7 +14,7 @@ test("should find optional part at end of path", function(t){
   )
 })
 
-test("should find nested optional elements at end of path", function(t){
+test("Parsing should find nested optional elements at end of path", function(t){
   var out = rhumb._parse("/one/two(/three/four(/five))")
 
   t.plan(2)

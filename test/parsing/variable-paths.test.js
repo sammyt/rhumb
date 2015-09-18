@@ -1,7 +1,7 @@
 var test  = require('tape')
   , rhumb = require('../../lib/rhumb')
 
-test("should find single variable part", function(t) {
+test("Parsing should find single variable part", function(t) {
   var out = rhumb._parse("/{wibble}")
 
   t.plan(2)
@@ -11,7 +11,7 @@ test("should find single variable part", function(t) {
   )
 })
 
-test("should find multiple variable parts", function(t) {
+test("Parsing should find multiple variable parts", function(t) {
   var out = rhumb._parse("/{wibble}/{wobble}")
 
   t.plan(2)
@@ -23,7 +23,7 @@ test("should find multiple variable parts", function(t) {
   )
 })
 
-test("should find variable and fixed parts", function(t) {
+test("Parsing should find variable and fixed parts", function(t) {
   var out = rhumb._parse("/{wibble}/bar/{wobble}")
 
   t.plan(2)
