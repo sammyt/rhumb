@@ -1,20 +1,18 @@
-box: nodesource/trusty
+box: node
 
 dev:
   steps:
-    - script:
-        code: export NODE_ENV=development
     - internal/watch:
-        code: npm test
+        code: make test
         reload: true
 
 build:
   steps:
-    - npm-install
-    - npm-test
+    - script:
+        name: nodejs information
+        code: |
+          echo "node version $(node -v) running"
+          echo "npm version $(npm -v) running"
 
-deploy:
-  steps:
-    - npm-install
-    - npm-test
-    - npm-publish
+    - script:
+        code: make all
