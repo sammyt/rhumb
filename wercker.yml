@@ -1,0 +1,18 @@
+box: node
+
+dev:
+  steps:
+    - internal/watch:
+        code: make test
+        reload: true
+
+build:
+  steps:
+    - script:
+        name: nodejs information
+        code: |
+          echo "node version $(node -v) running"
+          echo "npm version $(npm -v) running"
+
+    - script:
+        code: make all
